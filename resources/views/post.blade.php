@@ -54,7 +54,7 @@ use App\Models\Post;
                     </h1>
 
                     <div class="space-y-4 lg:text-lg leading-loose">
-                        {{$post->body}}
+                        {!! $post->body !!}
                     </div>
                 </div>
             </article>
