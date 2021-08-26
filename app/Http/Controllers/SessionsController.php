@@ -16,17 +16,20 @@ class SessionsController extends Controller
         return view('sessions.create');
     }
 
-    public function  store() {
+    public function  store(): Redirector|Application|RedirectResponse
+    {
         $attributes = request()->validate([
             'email' => ['required', 'email'],
             'password' => ['required']
         ]);
 
-        if(auth()->attempt($attributes)) {
-            return redirect('/')->with('success', 'Welcome Back!');
+        if(!auth()->attempt($attributes)) {
+            throw ValidationException::withMessages(['email' => 'Your provided credentials could not be verified.']);
+
         }
 
-        throw ValidationException::withMessages(['email' => 'Your provided credentials could not be verified.']);
+        session()->regenerate();
+        return redirect('/')->with('success', 'Welcome Back!');
     }
 
     public function destroy(): Redirector|Application|RedirectResponse
